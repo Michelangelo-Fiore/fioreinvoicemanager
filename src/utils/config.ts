@@ -7,20 +7,15 @@ import Cookies from "js-cookie";
 //
 // const apiUrl = "https://fioreinvoicemanager.onrender.com";
 // const frontendUrl = "https://fioreinvoicemanager.vercel.app/";
-// const backendUrl = "https://fioreinvoicemanager.onrender.com";
 
 /** URL for API - LOCAL */
 // const apiUrl = "http://localhost:4000";
 // const frontendUrl = "http://localhost:3000";
-// const backendUrl = "https://fioreinvoicemanager.onrender.com";
 
 /** URL for API - LOCAL AND ON VERCEL ENV */
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"; // backend
 const frontendUrl =
 	process.env.NEXT_PUBLIC_FRONTEND_URL || "http://localhost:3000";
-const backendUrl =
-	process.env.NEXT_PUBLIC_BACKEND_URL ||
-	"https://fioreinvoicemanager.onrender.com";
 
 /** API BASE URL */
 const apiBaseUrl = `${apiUrl}/api`;
