@@ -1,4 +1,4 @@
-import { apiBaseUrl, frontendUrl } from "../../utils/config";
+import { apiBaseUrl } from "../../utils/config";
 import { GeneralAuthRoutes } from "../../utils/urls";
 
 /** Handle Log Into FattureInCloud */
