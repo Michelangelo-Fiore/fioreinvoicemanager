@@ -1,5 +1,19 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+
+#  Excluded Files
+#  Excluded Files
+#  Excluded Files
+#  Excluded Files
+
+public/sw.js
+
+#  Excluded Files
+#  Excluded Files
+#  Excluded Files
+#  Excluded Files
+
+
 # dependencies
 /node_modules
 /.pnp
