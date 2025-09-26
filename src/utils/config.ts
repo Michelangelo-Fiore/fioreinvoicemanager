@@ -5,14 +5,14 @@ import Cookies from "js-cookie";
 /** URL for API - PRODUCTION */
 // const frontendUrl = "https://fioreinvoicemanager.web.app";
 //
-// const apiUrl = "https://fioreinvoicemanager.onrender.com";
-// const frontendUrl = "https://fioreinvoicemanager.vercel.app/";
-// const backendUrl = "https://fioreinvoicemanager.onrender.com";
+const apiUrl = "https://fioreinvoicemanager.onrender.com";
+const frontendUrl = "https://fioreinvoicemanager.vercel.app/";
+const backendUrl = "https://fioreinvoicemanager.onrender.com";
 
 /** URL for API - LOCAL */
-const apiUrl = "http://localhost:4000";
-const frontendUrl = "http://localhost:3000";
-const backendUrl = "https://fioreinvoicemanager.onrender.com";
+// const apiUrl = "http://localhost:4000";
+// const frontendUrl = "http://localhost:3000";
+// const backendUrl = "https://fioreinvoicemanager.onrender.com";
 
 /** API BASE URL */
 const apiBaseUrl = `${apiUrl}/api`;
