@@ -3,8 +3,9 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 /** URL for API - PRODUCTION */
-const apiUrl = "https://fioreinvoicemanager.onrender.com";
 // const frontendUrl = "https://fioreinvoicemanager.web.app";
+//
+const apiUrl = "https://fioreinvoicemanager.onrender.com";
 const frontendUrl = "https://fioreinvoicemanager.vercel.app/";
 const backendUrl = "https://fioreinvoicemanager.onrender.com";
 

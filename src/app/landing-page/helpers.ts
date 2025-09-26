@@ -1,4 +1,4 @@
-import { apiBaseUrl, backendUrl } from "../../utils/config";
+import { apiBaseUrl, frontendUrl } from "../../utils/config";
 import { GeneralAuthRoutes } from "../../utils/urls";
 
 /** Handle Log Into FattureInCloud */
@@ -7,7 +7,7 @@ export const handleLogIntoFattureInCloud = async (
 	setErrorMessage: (msg: string) => void,
 ) => {
 	try {
-		console.log("Login Started");
+		console.log("Login Started stage 1 ==>");
 
 		// Open a new tab to start the OAuth flow via your backend
 		const authWindow = window.open(`${apiBaseUrl}/fatture/auth`, "_blank");
@@ -16,13 +16,15 @@ export const handleLogIntoFattureInCloud = async (
 			throw new Error("Unable to open authentication window.");
 		}
 
+		console.log("Login stage 2 ==>");
+
 		// ✅ Listen for messages from backend OAuth redirect
 		const handleMessage = (event: MessageEvent) => {
 			console.log("event.origin ==>", event.origin);
 			console.log("event.data ==>", event.data);
 
-			// ✅ validate against frontend origin (to match backend postMessage)
-			if (event.origin !== backendUrl) return;
+			const allowedOrigins = [frontendUrl, apiBaseUrl]; // accept both backend + frontend
+			if (!allowedOrigins.includes(event.origin)) return;
 
 			if (event.data?.status === "success") {
 				console.log("Login Success:", event.data);
@@ -36,6 +38,8 @@ export const handleLogIntoFattureInCloud = async (
 		};
 
 		window.addEventListener("message", handleMessage);
+
+		console.log("Login stage 3 ==>");
 
 		// optional: cleanup when window is closed
 		const checkWindowClosed = setInterval(() => {
