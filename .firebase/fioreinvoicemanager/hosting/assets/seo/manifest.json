@@ -1,0 +1,60 @@
+{
+	"theme_color": "#199B6C",
+	"background_color": "#ffffff",
+	"display": "standalone",
+	"start_url": "/",
+	"scope": "/",
+	"id": "/seo/",
+	"name": "Sefarvest",
+	"short_name": "Sefarvest",
+	"description": "making investments safer...",
+	"orientation": "portrait-primary",
+	"icons": [
+		{
+			"src": "/seo/icons/icon-192-maskable.png",
+			"sizes": "192x192",
+			"type": "image/png",
+			"purpose": "any"
+		},
+		{
+			"src": "/seo/icons/icon-192-maskable.png",
+			"sizes": "192x192",
+			"type": "image/png",
+			"purpose": "maskable"
+		},
+		{
+			"src": "/seo/icons/icon-256-maskable.png",
+			"sizes": "256x256",
+			"type": "image/png",
+			"purpose": "maskable"
+		},
+		{
+			"src": "/seo/icons/icon-384-maskable.png",
+			"sizes": "384x384",
+			"type": "image/png",
+			"purpose": "maskable"
+		},
+		{
+			"src": "/seo/icons/icon-512-maskable.png",
+			"sizes": "512x512",
+			"type": "image/png",
+			"purpose": "maskable"
+		}
+	],
+	"screenshots": [
+    {
+     "src": "/seo/screenshots/screenshot-desktop.png",
+      "sizes": "1440x652",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Sefarvest - what we do!"
+    },
+		{
+			"src": "/seo/screenshots/screenshot-mobile.png",
+			 "sizes": "430x930",
+			 "type": "image/png",
+			 "form_factor": "narrow",
+			 "label": "Sefarvest - what we do!"
+		 }
+	]
+}

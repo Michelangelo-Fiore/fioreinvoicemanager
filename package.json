@@ -1,0 +1,50 @@
+{
+	"name": "fiore-invoice-manager-frontend",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"dev": "npm run lint-fix && npm run lint && npm run build && next dev --turbopack",
+		"build": "next build",
+		"start": "next start",
+		"lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+		"lint-fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+		"format": "prettier --ignore-path .gitignore --write \"**/*.+(js|jsx|ts|tsx,json,md)\"",
+		"test:all": "set CI=true && next test && npm run lint"
+	},
+	"dependencies": {
+		"@eslint/eslintrc": "^3.3.1",
+		"@eslint/js": "^9.32.0",
+		"@typescript-eslint/eslint-plugin": "^8.38.0",
+		"@typescript-eslint/parser": "^8.38.0",
+		"@vercel/speed-insights": "^1.2.0",
+		"axios": "^1.12.2",
+		"eslint-config-next": "15.4.5",
+		"eslint-config-prettier": "^10.1.8",
+		"eslint-plugin-import": "^2.32.0",
+		"eslint-plugin-prettier": "^5.5.3",
+		"eslint-plugin-react": "^7.37.5",
+		"eslint-plugin-react-hooks": "^5.2.0",
+		"framer-motion": "^12.23.12",
+		"js-cookie": "^3.0.5",
+		"next": "15.4.5",
+		"next-pwa": "^5.6.0",
+		"postcss": "^8.5.6",
+		"react": "19.1.0",
+		"react-dom": "19.1.0"
+	},
+	"devDependencies": {
+		"@next/eslint-plugin-next": "^15.4.6",
+		"@tailwindcss/postcss": "^4.1.11",
+		"@types/minimatch": "^6.0.0",
+		"@types/node": "^20",
+		"@types/react": "^19",
+		"@types/react-dom": "^19",
+		"autoprefixer": "^10.4.21",
+		"eslint": "^9.32.0",
+		"eslint-import-resolver-typescript": "^4.4.4",
+		"globals": "^16.3.0",
+		"prettier": "^3.6.2",
+		"tailwindcss": "^4.1.11",
+		"typescript": "^5"
+	}
+}

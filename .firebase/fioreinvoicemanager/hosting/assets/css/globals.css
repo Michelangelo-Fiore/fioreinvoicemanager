@@ -1,0 +1,106 @@
+@import "tailwindcss";
+/* @config "tailwind.config.ts"; */
+/* @config "../../tailwind.config.ts"; */
+
+/* ==========================================================================
+	 ##########################################################################
+   ########## TAILWIND CSS - NEW CONFIGURATION IS NOW IN CSS FILE ###########
+	 ##########################################################################
+   ========================================================================== */
+
+
+	:root {
+		--background: #ffffff;
+		--foreground: #ffffff;
+		/* --foreground: #131314; */
+		/* --m: #c41b1b; */
+		/* --b: #171717; */
+	}
+
+	@media (prefers-color-scheme: dark) {
+		:root {
+			--background: #ffffff;
+			/* --background: #0a0a0a; */
+			--foreground: #ededed;
+		}
+	}
+
+	body {
+		background: var(--background);
+		color: var(--foreground);
+		/* font-family: Arial, Helvetica, sans-serif; */
+		font-family: sans-serif;
+	}
+
+	 /* Custom Colors */
+	@theme {
+		--color-fim-red: #EB3C3C;
+		--color-fim-deep-red: #c41b1b;
+		--color-fim-wine: #6E2529;
+		--color-fim-gray: #d1d5dc;
+		--color-fim-background-black: #171717;
+	}
+
+	/* Custom Font Families - Setup is in the App / Utils folder <==||||==> Then App / Layout.tsx file */
+	@theme inline {
+		--color-background: var(--background);
+		--color-foreground: var(--foreground);
+	/* CUSTOM FONTS */
+	/* --font-Zapfino: var(--font-Zapfino);
+	--font-Fraunces: var(--font-Fraunces);
+	--font-Fraunces144: var(--font-Fraunces144);
+	--font-Lora: var(--font-Lora); */
+	--font-LibreFranklin: var(--font-LibreFranklin);
+	}
+
+
+
+/* Custom Screens - Setup is in the App / Utils folder */
+/* 1. Wipe out the defaults (optional) so you start fresh */
+/* @theme {
+	--breakpoint-*: initial;
+} */
+/* 2. Customize utility */
+/* @theme {
+	--breakpoint-mobilescreen: (max-width: 480.5px);
+	--breakpoint-tabletscreen: (min-width: 480.5px) and (max-width: 1024.5px);
+	--breakpoint-desktopscreen: (min-width: 1024.5px);
+} */
+/* @theme {
+	--breakpoint-mobile: 52.125rem;
+	--breakpoint-tablet: 52.125rem;
+	--breakpoint-desktop: 90rem;
+} */
+/* @theme { */
+/* cleared everything with the initial value, but I manually entered everything from the documentation table */
+/* --breakpoint-*: initial; */
+/* can set the breakpoints you want to keep */
+/* --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-xxl: 1380px;
+  --breakpoint-2xl: 1536px;
+} */
+
+/* Custom Spacing */
+/* @theme {
+	--spacing-is01px: 1px;
+	--spacing-529: 529px;
+} */
+
+/* Custom Background Images */
+/* @theme {
+	--bg-image-gradient-fade-red: linear-gradient(
+		to right,
+		white 70%,
+		#c71120 100%
+	);
+} */
+
+/* ==========================================================================
+	 ##########################################################################
+   #################### NORMAL CSS UTILITY CLASSES BELOW ####################
+	 ##########################################################################
+   ========================================================================== */
+
