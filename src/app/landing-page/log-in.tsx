@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { handleLogIntoFattureInCloud } from "./helpers";
-import { showOnDesktopOnly } from "@/utils/constants";
+// import { showOnDesktopOnly } from "@/utils/constants";
 import Buttons from "@/library/buttons/buttons";
 
 /** Log In */
@@ -12,7 +12,9 @@ const Login: React.FC = () => {
 	/** Desktop View */
 	const desktopView = () => {
 		return (
-			<div className={`${showOnDesktopOnly} `}>
+			<div
+			// className={`${showOnDesktopOnly} `}
+			>
 				<div className="text-black text-center font-LibreFranklin flex justify-center items-center h-screen w-full">
 					<div>
 						{/* Website Title */}
@@ -22,10 +24,10 @@ const Login: React.FC = () => {
 							</p>
 						</div>
 
-						<div className="mt-[10px]">
-							<p className="font-medium font-LibreFranklin text-[16px]">
+						<div className="mt-[20px]">
+							{/* <p className="font-medium font-LibreFranklin text-[16px]">
 								Don&apos;t have an account? Sign Up
-							</p>
+							</p> */}
 						</div>
 
 						<div className="flex flex-col justify-center items-center w-full">
