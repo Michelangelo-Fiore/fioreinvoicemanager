@@ -1,12 +1,3 @@
-/* Dashboard.tsx
-   CHANGES:
-   - Replaced JSON dump with a TailwindCSS table showcasing all data points.
-   - Added big resource type dropdown (Clients / Products / Receipts) above the table that fetches the selected resource.
-   - Added table header dropdown to choose which data point (column) to filter on + filter input.
-   - Added client-side pagination and page size control.
-   - Preserved existing comments, console.logs and structure. Followed existing comment styles.
-*/
-
 "use client";
 import { useEffect, useState } from "react";
 import {
@@ -17,15 +8,19 @@ import { showOnDesktopOnly } from "@/utils/constants";
 
 /** Dashboard Page */
 const Dashboard: React.FC = () => {
-	// preserve original states
 	const [data, setData] = useState<any[]>([]);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [error, setError] = useState<string | null>(null);
 
 	/* UI states */
 	const [resourceType, setResourceType] = useState<
-		"clients" | "products" | "receipts"
+		"clients" | "products" | "receipts" | "reports"
 	>("clients");
+	const [reportType, setReportType] = useState<
+		"weekly" | "monthly" | "supplier" | "category"
+	>("weekly");
+	const [startDate, setStartDate] = useState<string>("");
+	const [endDate, setEndDate] = useState<string>("");
 	const [filterField, setFilterField] = useState<string>("");
 	const [filterValue, setFilterValue] = useState<string>("");
 	const [page, setPage] = useState<number>(1);
@@ -35,22 +30,22 @@ const Dashboard: React.FC = () => {
 	useEffect(() => {
 		const ac = new AbortController();
 
-		// fetch selected resource
 		handleFetchResource(
 			resourceType,
 			setData,
 			setError,
 			setLoading,
 			ac.signal,
+			resourceType === "reports"
+				? { type: reportType, startDate, endDate }
+				: undefined,
 		).catch((err) => {
-			// preserve console behavior
 			console.error("handleFetchResource Error:", err);
 		});
 
 		return () => ac.abort();
-	}, [resourceType]);
+	}, [resourceType, reportType, startDate, endDate]);
 
-	/* Reset pagination when data or pageSize changes */
 	useEffect(() => {
 		setPage(1);
 	}, [data, pageSize]);
@@ -63,7 +58,6 @@ const Dashboard: React.FC = () => {
 		if (columns.length > 0 && !filterField) {
 			setFilterField(columns[0]);
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [columns]);
 
 	/** Filtering (client-side) */
@@ -101,9 +95,8 @@ const Dashboard: React.FC = () => {
 								</p>
 							</div>
 
-							{/* Big resource dropdown and login button */}
+							{/* Big resource dropdown */}
 							<div className="flex items-center gap-4">
-								{/* Big dropdown that when switched fetches data from the API */}
 								<select
 									className="border p-2 rounded-md"
 									value={resourceType}
@@ -113,7 +106,38 @@ const Dashboard: React.FC = () => {
 									<option value="clients">Clients</option>
 									<option value="products">Products</option>
 									<option value="receipts">Receipts</option>
+									<option value="reports">Reports</option>
 								</select>
+
+								{/* Report Type + Date filters */}
+								{resourceType === "reports" && (
+									<>
+										<select
+											className="border p-2 rounded-md"
+											value={reportType}
+											onChange={(e) => setReportType(e.target.value as any)}
+										>
+											<option value="weekly">Weekly</option>
+											<option value="monthly">Monthly</option>
+											<option value="supplier">Supplier</option>
+											<option value="category">Category</option>
+										</select>
+										<input
+											type="date"
+											className="border p-2 rounded-md"
+											value={startDate}
+											onChange={(e) => setStartDate(e.target.value)}
+											placeholder="Start Date"
+										/>
+										<input
+											type="date"
+											className="border p-2 rounded-md"
+											value={endDate}
+											onChange={(e) => setEndDate(e.target.value)}
+											placeholder="End Date"
+										/>
+									</>
+								)}
 							</div>
 						</div>
 
@@ -121,8 +145,6 @@ const Dashboard: React.FC = () => {
 						<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
 							<div className="flex items-center gap-3">
 								<label className="text-sm">Filter by:</label>
-
-								{/* Table header dropdown to choose which data point to filter */}
 								<select
 									className="border p-2 rounded-md"
 									value={filterField}
@@ -136,8 +158,6 @@ const Dashboard: React.FC = () => {
 										</option>
 									))}
 								</select>
-
-								{/* Filter input */}
 								<input
 									type="text"
 									placeholder="Type to filter..."
@@ -164,7 +184,6 @@ const Dashboard: React.FC = () => {
 
 						{/* Main content */}
 						<div className="bg-white rounded-lg shadow-sm border">
-							{/* Loading / Error */}
 							{loading && (
 								<div className="p-6 text-center">
 									<p className="text-lg">Loading data...</p>
@@ -175,8 +194,6 @@ const Dashboard: React.FC = () => {
 									<p>Error: {error}</p>
 								</div>
 							)}
-
-							{/* Table */}
 							{!loading && !error && (
 								<div className="overflow-auto">
 									<table className="min-w-full divide-y divide-gray-200">
@@ -211,7 +228,6 @@ const Dashboard: React.FC = () => {
 																key={`${idx}-${col}`}
 																className="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
 															>
-																{/* show primitive or JSON for objects */}
 																{typeof row[col] === "object" ? (
 																	<pre className="whitespace-pre-wrap max-w-md overflow-auto text-xs">
 																		{JSON.stringify(row[col], null, 2)}
@@ -228,15 +244,12 @@ const Dashboard: React.FC = () => {
 									</table>
 								</div>
 							)}
-
-							{/* Pagination footer */}
 							{!loading && !error && (
 								<div className="p-4 flex items-center justify-between">
 									<div className="text-sm text-gray-600">
 										Page {page} of {totalPages} — {totalItems} record
 										{totalItems !== 1 ? "s" : ""}
 									</div>
-
 									<div className="flex items-center gap-2">
 										<button
 											className="px-3 py-1 border rounded disabled:opacity-50"
@@ -264,13 +277,7 @@ const Dashboard: React.FC = () => {
 		);
 	};
 
-	return (
-		<div>
-			{desktopView()}
-			{/* {tabletView()}
-			{mobileView()} */}
-		</div>
-	);
+	return <div>{desktopView()}</div>;
 };
 
 export default Dashboard;
