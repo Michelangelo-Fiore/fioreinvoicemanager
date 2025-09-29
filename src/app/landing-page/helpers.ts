@@ -17,7 +17,7 @@ export const handleLogIntoFattureInCloud = async (
 		const allowedOrigins = [
 			"http://localhost:3000",
 			"https://fioreinvoicemanager.vercel.app",
-			"https://fioreinvoicemanager.onrender.com", // ✅ add backend too
+			// "https://fioreinvoicemanager.onrender.com", // ✅ add backend too
 		];
 
 		const handleMessage = (event: MessageEvent) => {

@@ -2,14 +2,8 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-/** URL for API - PRODUCTION */
-// const apiUrl = "https://fioreinvoicemanager.onrender.com";
-
-/** URL for API - LOCAL */
-// const apiUrl = "http://localhost:4000";
-
 /** URL for API - LOCAL AND ON VERCEL ENV */
-const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"; // backend
+const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 
 /** API BASE URL */
 const apiBaseUrl = `${apiUrl}/api`;
