@@ -44,10 +44,9 @@ export const handleFetchResource = async (
 		}
 
 		if (response && response.status === 200) {
-			console.log(`${resourceType} Details ==>`, response.data);
-			const payload = Array.isArray(response.data)
-				? response.data
-				: response.data?.data || response.data || [];
+			// ✅ Always extract from response.data.data (standardResponse wrapper)
+			const payload = response?.data?.data ?? [];
+			console.log(`${resourceType} Payload ==>`, payload);
 			setData(payload);
 		} else {
 			setData([]);
