@@ -2,9 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import dayjs from "dayjs";
 import isoWeek from "dayjs/plugin/isoWeek";
-import {
-	/** Handle Fetch Dashboard Details */ handleFetchResource,
-} from "./helpers";
+import { handleFetchResource } from "./helpers"; // fetcher
 import { showOnDesktopOnly } from "@/utils/constants";
 
 dayjs.extend(isoWeek);
@@ -23,7 +21,7 @@ const Dashboard: React.FC = () => {
 		| "issued-documents"
 		| "suppliers"
 		| "received-documents"
-	>("clients"); // default to expenses
+	>("clients"); // default
 	const [reportType, setReportType] = useState<"weekly" | "monthly">("weekly");
 	const [startDate, setStartDate] = useState<string>("");
 	const [endDate, setEndDate] = useState<string>("");
@@ -33,20 +31,19 @@ const Dashboard: React.FC = () => {
 	const [page, setPage] = useState<number>(1);
 	const [pageSize, setPageSize] = useState<number>(10);
 
-	/* Helper: compute default ranges */
+	/* Compute default ranges */
 	const computeDefaultRange = (type: "weekly" | "monthly") => {
 		const now = dayjs();
 		if (type === "weekly") {
-			const start = now.startOf("isoWeek");
-			const end = now.endOf("isoWeek");
 			return {
-				start: start.format("YYYY-MM-DD"),
-				end: end.format("YYYY-MM-DD"),
+				start: now.startOf("isoWeek").format("YYYY-MM-DD"),
+				end: now.endOf("isoWeek").format("YYYY-MM-DD"),
 			};
 		}
-		const start = now.startOf("month");
-		const end = now.endOf("month");
-		return { start: start.format("YYYY-MM-DD"), end: end.format("YYYY-MM-DD") };
+		return {
+			start: now.startOf("month").format("YYYY-MM-DD"),
+			end: now.endOf("month").format("YYYY-MM-DD"),
+		};
 	};
 
 	/* Pre-fill default dates */
@@ -78,7 +75,6 @@ const Dashboard: React.FC = () => {
 			"received-documents",
 			"clients",
 		];
-
 		const extraParams =
 			dateSupported.includes(resourceType) && startDate && endDate
 				? { startDate, endDate }
@@ -98,7 +94,7 @@ const Dashboard: React.FC = () => {
 		return () => ac.abort();
 	}, [resourceType, reportType, startDate, endDate]);
 
-	/* Check date field */
+	/* Check if any row has date fields */
 	useEffect(() => {
 		if (Array.isArray(data) && data.length > 0) {
 			const firstRow = data[0];
@@ -141,7 +137,7 @@ const Dashboard: React.FC = () => {
 		(page - 1) * pageSize + pageSize,
 	);
 
-	/** Money columns */
+	/** Detect money fields */
 	const moneyColumnKeys = useMemo(() => {
 		const candidates = [
 			"total",
