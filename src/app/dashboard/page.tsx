@@ -46,39 +46,18 @@ const Dashboard: React.FC = () => {
 		};
 	};
 
-	/* Pre-fill default dates */
+	/* Always pre-fill default dates for ALL resources */
 	useEffect(() => {
-		const dateSupported = [
-			"expenses",
-			"receipts",
-			"issued-documents",
-			"received-documents",
-			"clients",
-		];
-		if (dateSupported.includes(resourceType)) {
-			const { start, end } = computeDefaultRange(reportType);
-			setStartDate(start);
-			setEndDate(end);
-		} else {
-			setStartDate("");
-			setEndDate("");
-		}
+		const { start, end } = computeDefaultRange(reportType);
+		setStartDate(start);
+		setEndDate(end);
 	}, [reportType, resourceType]);
 
 	/* Fetch resource */
 	useEffect(() => {
 		const ac = new AbortController();
-		const dateSupported = [
-			"expenses",
-			"receipts",
-			"issued-documents",
-			"received-documents",
-			"clients",
-		];
 		const extraParams =
-			dateSupported.includes(resourceType) && startDate && endDate
-				? { startDate, endDate }
-				: undefined;
+			startDate && endDate ? { startDate, endDate } : undefined;
 
 		handleFetchResource(
 			resourceType,
@@ -100,7 +79,7 @@ const Dashboard: React.FC = () => {
 			const firstRow = data[0];
 			setHasDateField("date" in firstRow || "created_at" in firstRow);
 		} else {
-			setHasDateField(false);
+			setHasDateField(true); // force date controls since now all queries use date
 		}
 	}, [data]);
 
@@ -258,46 +237,6 @@ const Dashboard: React.FC = () => {
 						</div>
 					</div>
 
-					{/* Controls */}
-					<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
-						<div className="flex items-center gap-3">
-							<label className="text-sm">Filter by:</label>
-							<select
-								className="border p-2 rounded-md"
-								value={filterField}
-								onChange={(e) => setFilterField(e.target.value)}
-							>
-								{columns.length === 0 && <option value="">No fields</option>}
-								{columns.map((col) => (
-									<option key={col} value={col}>
-										{col}
-									</option>
-								))}
-							</select>
-							<input
-								type="text"
-								placeholder="Type to filter..."
-								className="border p-2 rounded-md w-64"
-								value={filterValue}
-								onChange={(e) => setFilterValue(e.target.value)}
-							/>
-						</div>
-
-						<div className="flex items-center gap-3">
-							<label className="text-sm">Page size:</label>
-							<select
-								className="border p-2 rounded-md"
-								value={pageSize}
-								onChange={(e) => setPageSize(Number(e.target.value))}
-							>
-								<option value={5}>5</option>
-								<option value={10}>10</option>
-								<option value={20}>20</option>
-								<option value={50}>50</option>
-							</select>
-						</div>
-					</div>
-
 					{/* Table */}
 					<div className="bg-white rounded-lg shadow-sm border">
 						{loading && (
@@ -311,95 +250,72 @@ const Dashboard: React.FC = () => {
 							</div>
 						)}
 						{!loading && !error && (
-							<div className="overflow-auto">
-								<table className="min-w-full divide-y divide-gray-200">
-									<thead className="bg-gray-50">
-										<tr>
-											{columns.map((col) => (
-												<th
-													key={col}
-													className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-												>
-													{col}
-												</th>
-											))}
-										</tr>
-									</thead>
-									<tbody className="bg-white divide-y divide-gray-200">
-										{paginatedData.length === 0 ? (
-											<tr>
-												<td
-													colSpan={columns.length || 1}
-													className="px-6 py-4 text-sm text-gray-500 text-center"
-												>
-													No records found.
-												</td>
-											</tr>
-										) : (
-											paginatedData.map((row: any, idx: number) => (
-												<tr key={idx} className="hover:bg-gray-50">
+							<>
+								{paginatedData.length === 0 ? (
+									<div className="p-6 text-center text-gray-500">
+										<p>No data for selected date range.</p>
+										<p className="text-xl mt-2">⬇️</p>
+										<p className="text-sm mt-1">
+											Please adjust the date range above to see results.
+										</p>
+									</div>
+								) : (
+									<div className="overflow-auto">
+										<table className="min-w-full divide-y divide-gray-200">
+											<thead className="bg-gray-50">
+												<tr>
 													{columns.map((col) => (
-														<td
-															key={`${idx}-${col}`}
-															className="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+														<th
+															key={col}
+															className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
 														>
-															{typeof row[col] === "object" ? (
-																<pre className="whitespace-pre-wrap max-w-md overflow-auto text-xs">
-																	{JSON.stringify(row[col], null, 2)}
-																</pre>
-															) : (
-																String(row[col] ?? "")
-															)}
-														</td>
+															{col}
+														</th>
 													))}
 												</tr>
-											))
-										)}
-									</tbody>
-									{moneyColumnKeys.length > 0 && (
-										<tfoot>
-											<tr className="bg-gray-50">
-												{columns.map((col) => (
-													<td
-														key={`total-${col}`}
-														className="px-6 py-3 text-left text-xs font-medium text-gray-700"
-													>
-														{moneyColumnKeys.includes(col)
-															? Number.isFinite(totalsByColumn[col])
-																? totalsByColumn[col].toFixed(2)
-																: "0.00"
-															: ""}
-													</td>
+											</thead>
+											<tbody className="bg-white divide-y divide-gray-200">
+												{paginatedData.map((row: any, idx: number) => (
+													<tr key={idx} className="hover:bg-gray-50">
+														{columns.map((col) => (
+															<td
+																key={`${idx}-${col}`}
+																className="px-6 py-4 whitespace-nowrap text-sm text-gray-700"
+															>
+																{typeof row[col] === "object" ? (
+																	<pre className="whitespace-pre-wrap max-w-md overflow-auto text-xs">
+																		{JSON.stringify(row[col], null, 2)}
+																	</pre>
+																) : (
+																	String(row[col] ?? "")
+																)}
+															</td>
+														))}
+													</tr>
 												))}
-											</tr>
-										</tfoot>
-									)}
-								</table>
-							</div>
-						)}
-						{!loading && !error && (
-							<div className="p-4 flex items-center justify-between">
-								<div className="text-sm text-gray-600">
-									Page {page} of {totalPages} — {totalItems} record
-									{totalItems !== 1 ? "s" : ""}
-								</div>
-								<div className="flex items-center gap-2">
-									<button
-										className="px-3 py-1 border rounded disabled:opacity-50"
-										disabled={page <= 1}
-										onClick={() => setPage((p) => Math.max(1, p - 1))}
-									>
-										Prev
-									</button>
-									<button
-										className="px-3 py-1 border rounded disabled:opacity-50"
-										disabled={page >= totalPages}
-										onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-									>
-										Next
-									</button>
-								</div>
-							</div>
+											</tbody>
+											{moneyColumnKeys.length > 0 && (
+												<tfoot>
+													<tr className="bg-gray-50">
+														{columns.map((col) => (
+															<td
+																key={`total-${col}`}
+																className="px-6 py-3 text-left text-xs font-medium text-gray-700"
+															>
+																{moneyColumnKeys.includes(col)
+																	? Number.isFinite(totalsByColumn[col])
+																		? totalsByColumn[col].toFixed(2)
+																		: "0.00"
+																	: ""}
+															</td>
+														))}
+													</tr>
+												</tfoot>
+											)}
+										</table>
+									</div>
+								)}
+							</>
 						)}
 					</div>
 				</div>
