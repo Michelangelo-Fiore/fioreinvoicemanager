@@ -2,12 +2,18 @@ import Services from "./services";
 
 /** Handle Fetch Dashboard Details / Generic Resource Fetcher */
 export const handleFetchResource = async (
-	resourceType: "clients" | "products" | "receipts" | "reports",
+	resourceType:
+		| "clients"
+		| "receipts"
+		| "expenses"
+		| "suppliers"
+		| "issued-documents"
+		| "received-documents",
 	setData: (data: any[]) => void,
 	setError: (err: string | null) => void,
 	setLoading: (loading: boolean) => void,
 	signal?: AbortSignal,
-	extraParams?: { type?: string; startDate?: string; endDate?: string },
+	extraParams?: { startDate?: string; endDate?: string },
 ) => {
 	try {
 		setLoading(true);
@@ -15,16 +21,32 @@ export const handleFetchResource = async (
 
 		let response;
 		if (resourceType === "clients") {
-			response = await Services.getClients({ signal });
-		} else if (resourceType === "products") {
-			response = await Services.getProducts({ signal });
-		} else if (resourceType === "receipts") {
-			response = await Services.getReceipts({ signal });
-		} else {
-			// reports
-			response = await Services.getReports({
+			response = await Services.getClients({
 				signal,
-				params: extraParams,
+				params: { ...extraParams },
+			});
+		} else if (resourceType === "receipts") {
+			response = await Services.getReceipts({
+				signal,
+				params: { ...extraParams },
+			});
+		} else if (resourceType === "expenses") {
+			response = await Services.getExpenses({
+				signal,
+				params: { ...extraParams },
+			});
+		} else if (resourceType === "suppliers") {
+			response = await Services.getSuppliers({ signal, params: {} });
+		} else if (resourceType === "issued-documents") {
+			response = await Services.getIssuedDocuments({
+				signal,
+				params: { ...extraParams },
+			});
+		} else {
+			// received-documents
+			response = await Services.getReceivedDocuments({
+				signal,
+				params: { ...extraParams },
 			});
 		}
 
