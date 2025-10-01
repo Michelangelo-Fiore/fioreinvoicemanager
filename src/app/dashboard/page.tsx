@@ -54,8 +54,6 @@ const Dashboard: React.FC = () => {
 	/* Fetch resource */
 	useEffect(() => {
 		const ac = new AbortController();
-		const extraParams =
-			startDate && endDate ? { startDate, endDate } : undefined;
 
 		handleFetchResource(
 			resourceType,
@@ -63,13 +61,29 @@ const Dashboard: React.FC = () => {
 			setError,
 			setLoading,
 			ac.signal,
-			extraParams,
+			{
+				startDate,
+				endDate,
+				page,
+				pageSize,
+				filterField,
+				filterValue,
+			},
 		).catch((err) => {
 			console.error("handleFetchResource Error:", err);
 		});
 
 		return () => ac.abort();
-	}, [resourceType, reportType, startDate, endDate]);
+	}, [
+		resourceType,
+		reportType,
+		startDate,
+		endDate,
+		page,
+		pageSize,
+		filterField,
+		filterValue,
+	]);
 
 	/* Check if any row has date fields */
 	useEffect(() => {
@@ -95,7 +109,7 @@ const Dashboard: React.FC = () => {
 		}
 	}, [columns, filterField]);
 
-	/** Filtering */
+	/** Filtering (local) */
 	const filteredData = useMemo(() => {
 		if (!Array.isArray(data)) return [];
 		return data.filter((row) => {
@@ -106,7 +120,7 @@ const Dashboard: React.FC = () => {
 		});
 	}, [data, filterField, filterValue]);
 
-	/** Pagination */
+	/** Pagination (local, fallback if BE doesn’t paginate) */
 	const totalItems = filteredData.length;
 	const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
 	const paginatedData = filteredData.slice(
@@ -231,6 +245,15 @@ const Dashboard: React.FC = () => {
 									</div>
 								</>
 							)}
+
+							{/* Filter input */}
+							<input
+								type="text"
+								placeholder={`Filter by ${filterField || "field"}`}
+								className="border p-2 rounded-md"
+								value={filterValue}
+								onChange={(e) => setFilterValue(e.target.value)}
+							/>
 						</div>
 					</div>
 
@@ -310,6 +333,29 @@ const Dashboard: React.FC = () => {
 								)}
 							</>
 						)}
+
+						{/* Pagination controls */}
+						<div className="flex justify-between items-center px-6 py-3 border-t bg-gray-50">
+							<div className="text-sm text-gray-600">
+								Page {page} of {totalPages}
+							</div>
+							<div className="flex gap-2">
+								<button
+									className="px-3 py-1 border rounded disabled:opacity-50"
+									onClick={() => setPage((p) => Math.max(1, p - 1))}
+									disabled={page === 1}
+								>
+									Prev
+								</button>
+								<button
+									className="px-3 py-1 border rounded disabled:opacity-50"
+									onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+									disabled={page === totalPages}
+								>
+									Next
+								</button>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
