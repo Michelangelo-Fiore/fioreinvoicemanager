@@ -5,7 +5,6 @@ export const handleFetchResource = async (
 	resourceType:
 		| "clients"
 		| "receipts"
-		| "expenses"
 		| "suppliers"
 		| "issued-documents"
 		| "received-documents",
@@ -30,11 +29,6 @@ export const handleFetchResource = async (
 				signal,
 				params: { ...extraParams },
 			});
-		} else if (resourceType === "expenses") {
-			response = await Services.getExpenses({
-				signal,
-				params: { ...extraParams },
-			});
 		} else if (resourceType === "suppliers") {
 			response = await Services.getSuppliers({ signal, params: {} });
 		} else if (resourceType === "issued-documents") {
@@ -43,7 +37,6 @@ export const handleFetchResource = async (
 				params: { ...extraParams },
 			});
 		} else {
-			// received-documents
 			response = await Services.getReceivedDocuments({
 				signal,
 				params: { ...extraParams },

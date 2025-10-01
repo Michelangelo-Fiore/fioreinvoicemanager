@@ -15,13 +15,12 @@ const Dashboard: React.FC = () => {
 
 	/* UI states */
 	const [resourceType, setResourceType] = useState<
-		| "expenses"
 		| "clients"
 		| "receipts"
 		| "issued-documents"
 		| "suppliers"
 		| "received-documents"
-	>("clients"); // default
+	>("clients"); // ✅ default now is clients
 	const [reportType, setReportType] = useState<"weekly" | "monthly">("weekly");
 	const [startDate, setStartDate] = useState<string>("");
 	const [endDate, setEndDate] = useState<string>("");
@@ -79,7 +78,7 @@ const Dashboard: React.FC = () => {
 			const firstRow = data[0];
 			setHasDateField("date" in firstRow || "created_at" in firstRow);
 		} else {
-			setHasDateField(true); // force date controls since now all queries use date
+			setHasDateField(true);
 		}
 	}, [data]);
 
@@ -173,7 +172,6 @@ const Dashboard: React.FC = () => {
 								value={resourceType}
 								onChange={(e) => setResourceType(e.target.value as any)}
 							>
-								<option value="expenses">Expenses</option>
 								<option value="clients">Clients</option>
 								<option value="receipts">Receipts</option>
 								<option value="issued-documents">Issued Documents</option>
@@ -254,10 +252,6 @@ const Dashboard: React.FC = () => {
 								{paginatedData.length === 0 ? (
 									<div className="p-6 text-center text-gray-500">
 										<p>No data for selected date range.</p>
-										<p className="text-xl mt-2">⬇️</p>
-										<p className="text-sm mt-1">
-											Please adjust the date range above to see results.
-										</p>
 									</div>
 								) : (
 									<div className="overflow-auto">
