@@ -3,7 +3,6 @@ import { useEffect, useMemo, useState } from "react";
 import dayjs from "dayjs";
 import isoWeek from "dayjs/plugin/isoWeek";
 import { handleFetchResource } from "./helpers"; // fetcher
-import { showOnDesktopOnly } from "@/utils/constants";
 
 dayjs.extend(isoWeek);
 
@@ -149,7 +148,7 @@ const Dashboard: React.FC = () => {
 
 	/** Desktop View */
 	const desktopView = () => (
-		<div className={`${showOnDesktopOnly}`}>
+		<div>
 			<div className="text-black font-LibreFranklin px-6 py-8 min-h-screen">
 				<div className="max-w-6xl mx-auto">
 					{/* Page Header */}
