@@ -12,7 +12,14 @@ export const handleFetchResource = async (
 	setError: (err: string | null) => void,
 	setLoading: (loading: boolean) => void,
 	signal?: AbortSignal,
-	extraParams?: { startDate?: string; endDate?: string },
+	extraParams?: {
+		startDate?: string;
+		endDate?: string;
+		page?: number; // ✅ added
+		pageSize?: number; // ✅ added
+		filterField?: string; // ✅ added
+		filterValue?: string; // ✅ added
+	},
 ) => {
 	try {
 		setLoading(true);
