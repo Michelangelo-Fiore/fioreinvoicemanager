@@ -25,7 +25,7 @@ export const handleLogIntoFattureInCloud = async (
 			console.log("event.data ==>", event.data);
 
 			// allow if origin matches one of the known domains
-			if (!allowedOrigins.includes(event.origin)) return;
+			// if (!allowedOrigins.includes(event.origin)) return;
 
 			if (event.data?.status === "success") {
 				console.log("Login Success:", event.data);
@@ -46,6 +46,7 @@ export const handleLogIntoFattureInCloud = async (
 			if (authWindow.closed) {
 				clearInterval(checkWindowClosed);
 				window.removeEventListener("message", handleMessage);
+				console.log("Login stage 4 ==>");
 			}
 		}, 500);
 	} catch (err: any) {
