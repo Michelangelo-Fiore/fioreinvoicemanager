@@ -165,12 +165,12 @@ const Dashboard: React.FC = () => {
 		<div>
 			<div className="text-black font-LibreFranklin px-6 py-8 min-h-screen">
 				<div className="max-w-6xl mx-auto">
+					<p className="font-semibold text-4xl text-center mb-[60px]">
+						Dashboard - Fiore Invoice Manager 📊
+					</p>
 					{/* Page Header */}
 					<div className="flex items-center justify-between mb-6">
 						<div>
-							<p className="font-semibold text-4xl">
-								Dashboard - Fiore Invoice Manager 📊
-							</p>
 							<p className="text-sm text-gray-600 mt-1">
 								{resourceType.charAt(0).toUpperCase() + resourceType.slice(1)}
 								{" • "}
@@ -205,7 +205,9 @@ const Dashboard: React.FC = () => {
 
 									<div className="flex items-center gap-2">
 										<div className="flex flex-col">
-											<label className="text-xs font-medium">From</label>
+											<label className="text-xs font-medium -mt-[16px] ">
+												From
+											</label>
 											<input
 												type="date"
 												className="border p-2 rounded-md"
@@ -224,7 +226,9 @@ const Dashboard: React.FC = () => {
 											/>
 										</div>
 										<div className="flex flex-col">
-											<label className="text-xs font-medium">To</label>
+											<label className="text-xs font-medium -mt-[16px]">
+												To
+											</label>
 											<input
 												type="date"
 												className="border p-2 rounded-md"
