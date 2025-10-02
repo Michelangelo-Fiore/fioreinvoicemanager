@@ -61,7 +61,7 @@ const Dashboard: React.FC = () => {
 		const ac = new AbortController();
 		const params =
 			resourceType === "clients"
-				? {}
+				? { page, pageSize, filterField, filterValue }
 				: { startDate, endDate, page, pageSize, filterField, filterValue };
 
 		handleFetchResource(
@@ -95,27 +95,20 @@ const Dashboard: React.FC = () => {
 
 	const filteredData = useMemo(() => {
 		if (!Array.isArray(data)) return [];
-		if (resourceType !== "clients") return data;
 		return data.filter((row) => {
 			if (!filterField || !filterValue) return true;
 			const cell = (row as any)[filterField];
 			if (cell === undefined || cell === null) return false;
 			return String(cell).toLowerCase().includes(filterValue.toLowerCase());
 		});
-	}, [data, filterField, filterValue, resourceType]);
+	}, [data, filterField, filterValue]);
 
 	const totalItems = filteredData.length;
-	const totalPages =
-		resourceType === "clients"
-			? Math.max(1, Math.ceil(totalItems / pageSize))
-			: 1;
-	const paginatedData =
-		resourceType === "clients"
-			? filteredData.slice(
-					(page - 1) * pageSize,
-					(page - 1) * pageSize + pageSize,
-				)
-			: filteredData;
+	const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
+	const paginatedData = filteredData.slice(
+		(page - 1) * pageSize,
+		(page - 1) * pageSize + pageSize,
+	);
 
 	const desktopView = () => (
 		<div className="text-black font-LibreFranklin px-6 py-8 min-h-screen">
@@ -135,10 +128,10 @@ const Dashboard: React.FC = () => {
 
 				{/* Resource Selector + Filters */}
 				<div className="flex items-center mb-6 gap-6">
-					{/* Switch Module */}
+					{/* Switch Data Type */}
 					<div className="flex flex-col gap-1">
 						<label className="text-sm font-medium text-gray-700">
-							Switch Module
+							Switch Data Type
 						</label>
 						<select
 							className="border p-2 rounded-md"
@@ -159,9 +152,10 @@ const Dashboard: React.FC = () => {
 							Filter By{" "}
 							{resourceType
 								.replace(/-/g, " ")
-								.replace(/\b\w/g, (l) => l.toUpperCase())}
+								.replace(/\b\w/g, (l) => l.toUpperCase())}{" "}
+							Details
 						</label>
-						<div className="flex gap-2 bg-gray-50 p-1 rounded-md">
+						<div className="flex gap-2 bg-gray-50">
 							<select
 								className="border rounded p-2"
 								value={filterField}
@@ -227,14 +221,28 @@ const Dashboard: React.FC = () => {
 					)}
 				</div>
 
-				{/* Table Summary */}
-				<div className="flex justify-between items-center mb-2 px-2">
+				{/* Table Info & View Many */}
+				<div className="mb-2">
 					<div className="text-sm text-gray-600">Total Items: {totalItems}</div>
-					{resourceType === "clients" && (
-						<div className="text-sm text-gray-600">
+					<div className="flex items-center gap-2 mt-1">
+						<span className="text-sm text-gray-600">View:</span>
+						<select
+							className="border rounded p-1 text-sm"
+							value={pageSize}
+							onChange={(e) => {
+								setPageSize(Number(e.target.value));
+								setPage(1);
+							}}
+						>
+							<option value={5}>5</option>
+							<option value={10}>10</option>
+							<option value={20}>20</option>
+							<option value={30}>30</option>
+						</select>
+						<span className="text-sm text-gray-600">
 							Page {page} of {totalPages}
-						</div>
-					)}
+						</span>
+					</div>
 				</div>
 
 				{/* Table */}
@@ -288,30 +296,28 @@ const Dashboard: React.FC = () => {
 						</>
 					)}
 
-					{/* Pagination only for clients */}
-					{resourceType === "clients" && (
-						<div className="flex justify-between items-center px-6 py-3 border-t bg-gray-50">
-							<div className="text-sm text-gray-600">
-								Page {page} of {totalPages}
-							</div>
-							<div className="flex gap-2">
-								<button
-									className="px-3 py-1 border rounded disabled:opacity-50"
-									onClick={() => setPage((p) => Math.max(1, p - 1))}
-									disabled={page === 1}
-								>
-									Prev
-								</button>
-								<button
-									className="px-3 py-1 border rounded disabled:opacity-50"
-									onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-									disabled={page === totalPages}
-								>
-									Next
-								</button>
-							</div>
+					{/* Pagination for all modules */}
+					<div className="flex justify-between items-center px-6 py-3 border-t bg-gray-50">
+						<div className="text-sm text-gray-600">
+							Page {page} of {totalPages}
 						</div>
-					)}
+						<div className="flex gap-2">
+							<button
+								className="px-3 py-1 border rounded disabled:opacity-50"
+								onClick={() => setPage((p) => Math.max(1, p - 1))}
+								disabled={page === 1}
+							>
+								Prev
+							</button>
+							<button
+								className="px-3 py-1 border rounded disabled:opacity-50"
+								onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+								disabled={page === totalPages}
+							>
+								Next
+							</button>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
