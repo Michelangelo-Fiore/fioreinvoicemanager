@@ -19,9 +19,9 @@ const Dashboard: React.FC = () => {
 	/* UI states */
 	const [resourceType, setResourceType] = useState<
 		| "clients"
+		| "suppliers"
 		| "receipts"
 		| "issued-documents"
-		| "suppliers"
 		| "received-documents"
 	>("clients");
 	const [reportType, setReportType] = useState<"weekly" | "monthly">("weekly");
@@ -135,10 +135,10 @@ const Dashboard: React.FC = () => {
 
 				{/* Resource Selector + Filters */}
 				<div className="flex items-center mb-6 gap-6">
-					{/* Switch Data Type */}
+					{/* Switch Module */}
 					<div className="flex flex-col gap-1">
 						<label className="text-sm font-medium text-gray-700">
-							Switch Data Type
+							Switch Module
 						</label>
 						<select
 							className="border p-2 rounded-md"
@@ -146,9 +146,9 @@ const Dashboard: React.FC = () => {
 							onChange={(e) => setResourceType(e.target.value as any)}
 						>
 							<option value="clients">Clients</option>
+							<option value="suppliers">Suppliers</option>
 							<option value="receipts">Receipts</option>
 							<option value="issued-documents">Issued Documents</option>
-							<option value="suppliers">Suppliers</option>
 							<option value="received-documents">Received Documents</option>
 						</select>
 					</div>
@@ -159,10 +159,9 @@ const Dashboard: React.FC = () => {
 							Filter By{" "}
 							{resourceType
 								.replace(/-/g, " ")
-								.replace(/\b\w/g, (l) => l.toUpperCase())}{" "}
-							Details
+								.replace(/\b\w/g, (l) => l.toUpperCase())}
 						</label>
-						<div className="flex gap-2 bg-gray-50">
+						<div className="flex gap-2 bg-gray-50 p-1 rounded-md">
 							<select
 								className="border rounded p-2"
 								value={filterField}
@@ -177,7 +176,7 @@ const Dashboard: React.FC = () => {
 							<input
 								type="text"
 								placeholder={
-									filterField ? `Search by ${filterField}` : "Search by ..."
+									filterField ? `Search by ${filterField}` : "Search"
 								}
 								className="border p-2 rounded-md"
 								value={filterValue}
@@ -228,6 +227,16 @@ const Dashboard: React.FC = () => {
 					)}
 				</div>
 
+				{/* Table Summary */}
+				<div className="flex justify-between items-center mb-2 px-2">
+					<div className="text-sm text-gray-600">Total Items: {totalItems}</div>
+					{resourceType === "clients" && (
+						<div className="text-sm text-gray-600">
+							Page {page} of {totalPages}
+						</div>
+					)}
+				</div>
+
 				{/* Table */}
 				<div className="bg-white rounded-lg shadow-sm border">
 					{loading && <div className="p-6 text-center">Loading data...</div>}
@@ -243,6 +252,9 @@ const Dashboard: React.FC = () => {
 									<table className="min-w-full divide-y divide-gray-200">
 										<thead className="bg-gray-50">
 											<tr>
+												<th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+													#
+												</th>
 												{columns.map((col) => (
 													<th
 														key={col}
@@ -256,6 +268,9 @@ const Dashboard: React.FC = () => {
 										<tbody className="bg-white divide-y divide-gray-200">
 											{paginatedData.map((row: any, idx: number) => (
 												<tr key={idx} className="hover:bg-gray-50">
+													<td className="px-6 py-4 text-sm text-gray-700">
+														{(page - 1) * pageSize + idx + 1}
+													</td>
 													{columns.map((col) => (
 														<td
 															key={`${idx}-${col}`}

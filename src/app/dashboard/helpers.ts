@@ -4,8 +4,8 @@ import Services from "./services";
 export const handleFetchResource = async (
 	resourceType:
 		| "clients"
-		| "receipts"
 		| "suppliers"
+		| "receipts"
 		| "issued-documents"
 		| "received-documents",
 	setData: (data: any[]) => void,
@@ -31,13 +31,13 @@ export const handleFetchResource = async (
 				signal,
 				params: { ...extraParams },
 			});
+		} else if (resourceType === "suppliers") {
+			response = await Services.getSuppliers({ signal, params: {} });
 		} else if (resourceType === "receipts") {
 			response = await Services.getReceipts({
 				signal,
 				params: { ...extraParams },
 			});
-		} else if (resourceType === "suppliers") {
-			response = await Services.getSuppliers({ signal, params: {} });
 		} else if (resourceType === "issued-documents") {
 			response = await Services.getIssuedDocuments({
 				signal,
