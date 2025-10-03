@@ -180,7 +180,7 @@ const Dashboard: React.FC = () => {
 					</div>
 
 					{/* Weekly/Monthly + Date Range */}
-					{resourceType !== "clients" && (
+					{resourceType !== "clients" && resourceType !== "suppliers" && (
 						<div className="flex items-center gap-4">
 							<div className="flex flex-col gap-1">
 								<label className="text-sm font-medium text-gray-700">
